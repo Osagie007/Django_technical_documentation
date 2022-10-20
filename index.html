@@ -1,0 +1,129 @@
+** start of undefined **
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Documentation</title>
+     <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div>
+    <nav id="navbar">
+      <header><h1>Django</h1></header>
+      <ul>
+          <li><a class="nav-link" href="#Introduction">Introduction</a></li>
+          <li><a class="nav-link" href="#Admin">Admin</a></li>
+          <li><a class="nav-link" href="#Models" >Models</a></li>
+          <li><a class="nav-link" href="#Settings">Settings</a></li>
+          <li><a class="nav-link" href="#Urls">Urls</a></li>
+          <li><a class="nav-link" href="#Utils">Utils</a></li>
+          <li><a class="nav-link" href="#Views">Views</a></li>
+			  </ul>
+    </nav>
+  </div>
+  <main id ="main-doc">
+    <section id ="Introduction" class="main-section">
+      <header><h1>Introduction</h1></header>
+      <p>Django is a python web framework for creating web apps and websites.</p>
+      <ul> The following are important parts of a django application: 
+        <li>Admin.py</li>
+        <li>Models.py</li>
+        <li>Settings.py</li>
+        <li>Urls.py</li>
+        <li>Utils.py</li>
+        <li>Views.py</li>
+      </ul>
+      <p>The django framework is a very integral part of website development as a lot of big sites being used such as instagram were built with it.</p>
+    </section>
+    <section id ="Admin" class="main-section">
+      <header><h1>Admin</h1></header>
+      <p>In the Admin.py section, models are registered. This is done so as to render such models in the admin panel of the website. </p><code>
+        from django.contrib import admin
+from .models import *
+
+# Register your models here.
+admin.site.register(Customer)
+      </code>
+      <p>As seen above the model Customer is being registered.</p>
+    </section>
+    <section id ="Models" class="main-section">
+      <header><h1>Models</h1></header>
+      <p>Django web applications access and manage data through Python objects referred to as models. Models define the structure of stored data, including the field types and possibly also their maximum size, default values, selection list options, help text for documentation, label text for forms, etc.</p>
+      <code><pre>
+from django.db import models
+from django.contrib.auth.models import User
+
+# Create your models here.
+
+class Customer(models.Model):
+        user = models.OneToOneField(User, null=True,  
+         blank=True, on_delete=models.CASCADE)
+	name = models.CharField(max_length=200, null=True)
+	email = models.CharField(max_length=200)
+
+	def __str__(self):
+		return self.name</pre>
+      </code>
+      <p>The the class of Customer is being registered in the models section.</p>
+    </section>
+    <section id ="Settings" class="main-section">
+      <header><h1>Settings</h1></header>
+      <p>Settings.py is the part of the django app that comes with inbuit configurations for the app. New configurations such as a new app can be added to it. </p><code><pre>
+# Application definition
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'store.apps.StoreConfig',
+]
+        </pre></code>
+      <p>The store.apps.StoreConfig is a new app added to the already existing liist of installed apps</p>
+    </section>
+    <section id ="Urls" class="main-section">
+      <header><h1>Urls</h1></header>
+      <p>The urls.py section is where the websites links are set. It has a starter code of this.</p>
+      <code>
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [  
+            path('admin/', admin.site.urls),
+            path('', include('store.urls')),
+]
+      </code>
+      <p>The urls for the store have been added to the projects urls path.</p>
+      </section>
+      <section id ="Utils" class="main-section">
+      <header><h1>Utils</h1></header>
+      <p>This is not an important part of the django app, for it is created in order to save functions that will be called in the views.py section.</p>
+      <p> It is used to make the page neater.</p>
+      </section>
+      <section id ="Views" class="main-section">
+      <header><h1>Views</h1></header>
+      <p>Views.py is the part of the code the user of a site can see. It is the part that interacts with the user. It renders htmls, json and many other languages.</p>
+      <code>
+        <pre>
+from django.shortcuts import render
+from .utils import cookieCart, cartData, guestOrder
+from .models import *
+
+def store(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    products = Product.objects.all()
+    context = {'products': products, 'cartItems': cartItems}
+    return render(request, 'store/store.html', context)
+        </pre>
+        </code>
+      <p>As seen above the store function takes in a request argument in order to render store.html amongst others.</p>
+    </section>
+  </main>
+</body>
+</html>
